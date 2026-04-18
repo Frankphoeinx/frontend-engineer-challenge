@@ -5,4 +5,5 @@ test-results
 coverage
 .DS_Store
 *.tsbuildinfo
-
+.idea/
+.codex-artifacts/
