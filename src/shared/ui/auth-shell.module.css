@@ -1,0 +1,40 @@
+.root {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-surface);
+}
+
+.panel {
+  display: flex;
+  flex: 0 0 min(50%, 800px);
+  min-width: 0;
+  flex-direction: column;
+  background: var(--color-surface);
+}
+
+.header {
+  padding: 16px 20px 0;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 80px;
+}
+
+.footer {
+  border-top: 1px solid var(--color-line);
+  padding: 32px;
+}
+
+@media (max-width: 1024px) {
+  .panel {
+    flex: 1 1 auto;
+  }
+
+  .content {
+    padding: 32px 24px 40px;
+  }
+}

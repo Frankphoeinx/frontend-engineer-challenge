@@ -1,0 +1,32 @@
+.root {
+  display: flex;
+  width: min(100%, 570px);
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(32px, 3vw, 48px);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.description {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.link {
+  width: fit-content;
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.link:hover {
+  color: var(--color-accent-hover);
+}

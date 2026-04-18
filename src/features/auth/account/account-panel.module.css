@@ -1,0 +1,60 @@
+.page {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: linear-gradient(180deg, #f7f9fc 0%, #eef3fa 100%);
+}
+
+.card {
+  display: flex;
+  width: min(100%, 480px);
+  flex-direction: column;
+  gap: 24px;
+  border: 1px solid rgba(31, 31, 39, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 32px;
+  box-shadow: 0 30px 60px rgba(39, 71, 122, 0.08);
+}
+
+.title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.muted {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.userBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.userLabel {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.userValue {
+  margin: 0;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.userMeta {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}

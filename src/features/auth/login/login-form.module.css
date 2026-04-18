@@ -1,0 +1,36 @@
+.root {
+  width: min(100%, 570px);
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(32px, 3vw, 48px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.forgotLink {
+  align-self: center;
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.forgotLink:hover {
+  color: var(--color-accent-hover);
+}

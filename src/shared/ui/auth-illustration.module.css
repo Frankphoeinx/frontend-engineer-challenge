@@ -1,0 +1,62 @@
+.root {
+  position: relative;
+  flex: 1 1 auto;
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    var(--color-illustration-start) 0%,
+    var(--color-illustration-end) 100%
+  );
+}
+
+.scene {
+  position: absolute;
+  width: 512px;
+  height: 480px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.globe {
+  position: absolute;
+  top: 0;
+  left: 32px;
+  width: 480px;
+  height: 480px;
+}
+
+.particleLeft,
+.particleTopRight,
+.particleBottomRight {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #4262fb 0%, #4e6cfd 100%);
+  box-shadow:
+    inset 0 0 24px rgba(255, 255, 255, 0.5),
+    inset 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.particleLeft {
+  top: 140px;
+  left: 0;
+}
+
+.particleTopRight {
+  top: 8px;
+  left: 402px;
+}
+
+.particleBottomRight {
+  top: 398px;
+  left: 402px;
+}
+
+@media (max-width: 1024px) {
+  .root {
+    display: none;
+  }
+}

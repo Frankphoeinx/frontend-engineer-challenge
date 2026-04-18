@@ -1,116 +1,128 @@
-# Advanced Frontend Engineer Challenge
+# Orbitto Auth Frontend
 
-Искренне благодарим вас за время и внимание к этому челленджу и надеемся на долгосрочную совместную командную работу
+This repository currently implements the first vertical slice of the challenge: the `login` flow.
 
-Подписывайтесь на канал с новыми челленджами: [@atls_challenges](https://t.me/atls_challenges)
+## How To Run
 
-Не забудьте сперва поставить Star. Спасибо!
+1. Install dependencies:
 
-Этот репозиторий — инженерный челлендж для кандидатов на frontend позиции
+```bash
+npm install
+```
 
-Задача узкая по продукту и широкая по инженерным решениям: нам важно увидеть не только верстку, а умение проектировать клиентскую часть под реальный backend
+2. Copy environment variables:
 
-## Контекст
+```bash
+cp .env.example .env.local
+```
 
-Вам нужно взять любой понравившийся fork [backend/fullstack-челленджа](https://github.com/atls-academy/engineer-challenge) и реализовать под него frontend для 3 сценариев:
-1. Регистрация
-2. Авторизация
-3. Восстановление пароля
+3. Start the frontend:
 
-Дизайн остается тем же: [Figma-файл Orbitto Service](https://www.figma.com/design/31KetUbya482vMSGgyiNIf/Orbitto-%7C-Service--Copy-?node-id=102-12806&t=TMlkJ3c3j3vJF5fb-4)
-Файл доступен для создания копии в ваш workspace, но права на редактирование исходного файла не выдаются
-Запросы на доступ к редактированию исходного файла не рассматриваются
+```bash
+npm run dev
+```
 
-## Что важно
+The frontend expects the selected backend to be available at `AUTH_GRPC_ENDPOINT`.
 
-Решение должно демонстрировать инженерную зрелость:
-- Декомпозиция интерфейса и переиспользуемость компонентов
-- Управление состоянием и асинхронными сценариями
-- Работа с контрактами backend (ошибки, edge-cases, нестабильные ответы)
-- Доступность (a11y), UX-состояния и производительность
-- Осознанная аргументация trade-offs
+## Selected Backend
 
-`Просто сверстать макет` не считается целевым уровнем решения для этого челленджа
+- Backend fork: [sdrobov/atlantis-engineer-challenge](https://github.com/sdrobov/atlantis-engineer-challenge)
+- Pinned backend commit: `a4a384107169f95b8873850c6d5a2700248bd156`
+- Vendored proto source: `api/proto/auth/v1/auth.proto`
 
-## Обязательные требования
+## Current Scope
 
-1. UI и UX
-- Реализуйте все экраны и состояния auth-флоу по дизайну
-- Обработайте loading/error/empty/success-состояния
-- Обеспечьте адаптивность минимум для desktop и mobile
+Implemented:
 
-2. Интеграция с backend
-- Подключитесь к выбранному fork и его контрактам
-- Обработайте реальные ответы сервиса, включая неуспешные сценарии
-- Зафиксируйте в README предположения по контрактам
+- `/login`
+- `POST /api/auth/login`
+- `GET /api/session/me`
+- `POST /api/auth/logout`
+- minimal `/account` post-login stub
+- route stubs for `/register` and `/forgot-password`
+- static auth illustration based on the provided Figma export
 
-3. Архитектура frontend
-- Покажите структуру слоев/модулей и границы ответственности
-- Избегайте проекта в формате `все в одном components/ и services/`
-- Опишите ключевые инженерные решения в README
+Not implemented in this stage:
 
-4. Качество и надежность
-- Добавьте тесты критичных пользовательских сценариев (unit/integration/e2e — на ваш выбор)
-- Добавьте базовую защиту от типичных UX-проблем (повторные отправки, race conditions, устаревшие запросы)
+- registration flow
+- forgot-password flow
+- reset-password flow
+- refresh orchestration
 
-5. Технологические решения
-- Фреймворк и стек выбираете самостоятельно
-- Ограничений по стеку нет: React, Vue, Angular, Svelte, WASM и любые другие варианты
-- В README обязательно объясните выбор и альтернативы, которые рассматривали
+## Frontend Architecture
 
-## Ограничения и анти-паттерны
+```mermaid
+flowchart LR
+  UI["app + src/features"] --> BFF["Route Handlers"]
+  BFF --> Server["src/server/auth + src/server/grpc"]
+  Server --> Backend["sdrobov gRPC backend"]
+```
 
-Следующие подходы считаются слабым решением:
-- Визуальный клон без инженерной структуры
-- Игнорирование неуспешных ответов и ошибок backend
-- Локальные хаки без объяснения trade-offs и последствий
-- Полная завязка на конкретный фреймворк без аргументации
+- `app/` owns routes, layouts, and route handlers
+- `src/features/` owns screen-specific logic and form orchestration
+- `src/shared/ui/` owns reusable primitives and auth layout
+- `src/server/` owns gRPC transport, cookies, and BFF logic
 
-## Что нужно сдать
+## Contract Assumptions
 
-1. Исходный код frontend в вашем fork
-2. Обновленный README в вашем fork с:
-- как запустить проект
-- явной ссылкой на выбранный backend fork
-- как устроена архитектура frontend
-- какие trade-offs были приняты
-- что бы вы сделали следующим шагом в production-версии
-- ссылкой на демо или скринкаст основных сценариев (если есть)
-3. Набор тестов и инструкции по запуску
+| Area | Assumption |
+| --- | --- |
+| Transport | The backend is reachable over gRPC from the Next.js Node runtime |
+| Auth login | `AuthCommandService.Login` returns access and refresh tokens with expiry timestamps |
+| Session lookup | `AuthQueryService.GetUserByEmail` is used with `orbitto_session_email` + bearer auth token |
+| Forgot password | Not implemented yet, but later backend `NotFound` will be normalized at the BFF layer |
 
-## Формат выполнения
+## Accepted Trade-Offs
 
-1. Выберите backend fork, с которым хотите работать
-2. Сделайте fork этого репозитория
-3. Реализуйте frontend-решение под выбранный backend
-4. Оформите результат в README
-5. Отправьте в отклике:
-- ссылку на ваш frontend fork
-- ссылку на `moodboard`
-- ссылку на `anti-moodboard`
+| Decision | Why |
+| --- | --- |
+| Next.js App Router | One repo for UI, BFF, cookies, and server-side gRPC |
+| Explicit BFF via Route Handlers | Clear transport boundary and simpler auth/session ownership |
+| Buf codegen | Typed contract snapshot pinned to a backend commit |
+| CSS Modules + tokens | Keeps styling local and predictable without utility sprawl |
+| Static illustration asset | Matches the provided auth layout without adding runtime animation or extra rendering cost |
+| No global store | Login slice only needs local form state and server-managed session cookies |
 
-## Использование ИИ
+## Test Instructions
 
-- Использование ИИ-инструментов в рамках челленджа разрешено
-- Если используете ИИ, добавьте в ваш fork папку `.agents`, чтобы было видно, как вы строили процесс решения
+Run unit tests:
 
-## Критерии оценки
+```bash
+npm run test:unit
+```
 
-1. Качество архитектуры frontend и управляемость кода
-2. Корректность auth-флоу и интеграции с backend
-3. Качество UX-состояний, обработки ошибок и адаптивности
-4. Тестируемость и надежность ключевых сценариев
-5. Ясность инженерной аргументации в README
+Run e2e tests:
 
-## Бонусные сигналы
+```bash
+npm run test:e2e
+```
 
-- Продуманная мини-дизайн-система или слой UI-kit внутри решения
-- Стратегия типизации контрактов (например, codegen/typed clients)
-- Базовая наблюдаемость фронта (telemetry/error tracking) с аргументацией, где это уместно
-- Использование микрофронтов, если это уместно и инженерно оправдано
-- Использование FSD с аргументацией границ и композиции слоев
-- Следование SOLID в архитектуре клиентской части
+Run all checks expected for this stage:
 
-## Важно
+```bash
+npm run lint
+npm run typecheck
+npm run build
+npm run test:unit
+npm run test:e2e
+```
 
-Нас интересует не идеальный пиксель-перфект любой ценой, а качество инженерного мышления и способность строить устойчивый frontend под реальный backend
+## Reviewer Demo Script
+
+1. Start the selected backend locally.
+2. Start this frontend with `npm run dev`.
+3. Open `/login`.
+4. Try an invalid login to see the invalid-credentials state.
+5. Use valid backend credentials to reach `/account`.
+6. Use `Logout` to return to `/login`.
+
+## Demo Link Or Screencast
+
+Not available yet.
+
+## Next Production Steps
+
+- implement register and password recovery flows
+- add refresh orchestration
+- expand session handling and route protection
+- add richer frontend observability for auth failures

@@ -1,0 +1,21 @@
+.root {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.prompt {
+  color: var(--color-text-secondary);
+}
+
+.link {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.link:hover {
+  color: var(--color-accent-hover);
+}

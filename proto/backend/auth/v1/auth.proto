@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package auth.v1;
+
+option go_package = "github.com/sdrobov/atlantis-engineer-challenge/gen/go/auth/v1;authv1";
+
+import "google/protobuf/timestamp.proto";
+
+service AuthCommandService {
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+  rpc RequestPasswordReset(RequestPasswordResetRequest) returns (RequestPasswordResetResponse);
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse);
+}
+
+service AuthQueryService {
+  rpc GetUserByEmail(GetUserByEmailRequest) returns (GetUserByEmailResponse);
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message RegisterResponse {
+  string user_id = 1;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string auth_token = 1;
+  string refresh_token = 2;
+  google.protobuf.Timestamp auth_expires_at = 3;
+  google.protobuf.Timestamp refresh_expires_at = 4;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message RefreshTokenResponse {
+  string auth_token = 1;
+  string refresh_token = 2;
+  google.protobuf.Timestamp auth_expires_at = 3;
+  google.protobuf.Timestamp refresh_expires_at = 4;
+}
+
+message RequestPasswordResetRequest {
+  string email = 1;
+}
+
+message RequestPasswordResetResponse {
+  bool accepted = 1;
+}
+
+message ResetPasswordRequest {
+  string token = 1;
+  string new_password = 2;
+}
+
+message ResetPasswordResponse {
+  bool updated = 1;
+}
+
+message GetUserByEmailRequest {
+  string email = 1;
+}
+
+message GetUserByEmailResponse {
+  string user_id = 1;
+  string email = 2;
+  bool active = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp last_login_at = 5;
+}
